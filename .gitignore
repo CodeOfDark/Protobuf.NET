@@ -402,3 +402,8 @@ FodyWeavers.xsd
 
 # macOS thumbnails
 ._*
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
