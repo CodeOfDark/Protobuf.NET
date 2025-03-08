@@ -10,8 +10,8 @@ internal static class Program
     {
         if (args.Length == 0)
         {
-            Console.WriteLine("Please provide a path to a .proto file.");
-            Console.WriteLine("Usage: Protobuf.Parser.Cli <path-to-proto-file>");
+            Console.WriteLine("Please provide a directory to the *.proto files.");
+            Console.WriteLine("Usage: Protobuf.Parser.Cli <path-to-proto-directory>");
             return;
         }
 
