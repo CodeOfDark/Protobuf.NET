@@ -23,7 +23,8 @@ internal static class Program
             var protoValidator = new ProtoValidator();
             var protoFiles = parser.ParseDirectory(protoPath);
             protoValidator.ValidateAll(protoFiles);
-            DisplayProtoFile(protoFiles.First(protoFile => protoFile.FileName == "Person.proto"));
+            
+            DisplayProtoFiles(protoFiles);
             
             Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey();
@@ -44,9 +45,16 @@ internal static class Program
         }
     }
 
-    static void DisplayProtoFile(ProtoFile protoFile)
+    private static void DisplayProtoFiles(IEnumerable<ProtoFile> protoFiles)
     {
         Console.Clear();
+        
+        foreach (var protoFile in protoFiles)
+            DisplayProtoFile(protoFile);
+    }
+
+    private static void DisplayProtoFile(ProtoFile protoFile)
+    {
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine("=".PadRight(80, '='));
         Console.WriteLine($"Protocol Buffer File: {protoFile.FileName}");
@@ -119,8 +127,8 @@ internal static class Program
                 DisplayExtension(extension, 1);
         }
     }
-        
-    static void DisplayEnum(ProtoEnum protoEnum, int indentLevel)
+
+    private static void DisplayEnum(ProtoEnum protoEnum, int indentLevel)
     {
         var indent = new string(' ', indentLevel * 2);
         var parentInfo = string.IsNullOrEmpty(protoEnum.ParentMessage) ? "" : $" (in {protoEnum.ParentMessage})";
