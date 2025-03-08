@@ -40,10 +40,10 @@ public class ReferenceValidator
     public void ValidateReferences(IEnumerable<ProtoFile> protoFiles)
     {
         var errors = new List<string>();
-        var enumerable = protoFiles.ToList();
-        var typeMap = BuildTypeMap(enumerable);
+        var protos = protoFiles.ToList();
+        var typeMap = BuildTypeMap(protos);
 
-        foreach (var protoFile in enumerable)
+        foreach (var protoFile in protos)
         {
             foreach (var message in protoFile.Messages)
                 errors.AddRange(ValidateMessageReferences(message, typeMap, protoFile.Package));
@@ -112,16 +112,20 @@ public class ReferenceValidator
         return errors;
     }
         
-    private Dictionary<string, TypeInfo> BuildTypeMap(IEnumerable<ProtoFile> protoFiles)
+    private Dictionary<string, TypeInfo> BuildTypeMap(IEnumerable<ProtoFile> protoFiles, HashSet<string>? visitedFiles = null)
     {
+        visitedFiles ??= [];
         var typeMap = new Dictionary<string, TypeInfo>();
         foreach (var protoFile in protoFiles)
         {
+            if (!visitedFiles.Add(protoFile.FilePath))
+                continue;
+            
             foreach (var import in protoFile.Imports)
             {
                 if (import.ResolvedFile is null) 
                     continue;
-                var resultTypeMap = BuildTypeMap([import.ResolvedFile]);
+                var resultTypeMap = BuildTypeMap([import.ResolvedFile], visitedFiles);
                 foreach (var (name, typeInfo) in resultTypeMap)
                     typeMap.TryAdd(name, typeInfo);
             }
@@ -141,6 +145,9 @@ public class ReferenceValidator
         var fullName = message.FullName;
         if (!string.IsNullOrEmpty(packageName) && string.IsNullOrEmpty(message.ParentMessage))
             fullName = $"{packageName}.{fullName}";
+
+        if (typeMap.ContainsKey(fullName))
+            return;
         
         typeMap[fullName] = new TypeInfo
         {
@@ -160,6 +167,9 @@ public class ReferenceValidator
         var fullName = protoEnum.FullName;
         if (!string.IsNullOrEmpty(packageName) && string.IsNullOrEmpty(protoEnum.ParentMessage))
             fullName = $"{packageName}.{fullName}";
+        
+        if (typeMap.ContainsKey(fullName))
+            return;
         
         typeMap[fullName] = new TypeInfo
         {
