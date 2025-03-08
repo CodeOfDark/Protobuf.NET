@@ -5,6 +5,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
+        <BaseIntermediateOutputPath>$(MSBuildProjectDirectory)\obj\</BaseIntermediateOutputPath>
+        <OutputPath>$(MSBuildProjectDirectory)\bin\</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Protobuf.Parser\Protobuf.Parser.csproj" />
+      <ProjectReference Include="..\..\src\Protobuf.Core\Protobuf.Core.csproj" />
     </ItemGroup>
 
 </Project>

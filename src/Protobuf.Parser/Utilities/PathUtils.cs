@@ -19,4 +19,14 @@ public static class PathUtils
         var baseDirectory = Path.GetDirectoryName(basePath) ?? "";
         return Path.GetFullPath(Path.Combine(baseDirectory, importPath));
     }
+    
+    /// <summary>
+    /// Gets the full path.
+    /// </summary>
+    /// <param name="path">The path of the proto file.</param>
+    /// <returns>The resolved path.</returns>
+    public static string ResolvePath(string path)
+    {
+        return Path.GetFullPath(path);
+    }
 }

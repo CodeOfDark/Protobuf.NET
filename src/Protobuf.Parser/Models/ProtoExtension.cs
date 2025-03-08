@@ -14,4 +14,14 @@ public class ProtoExtension
     /// Gets or sets the list of extension fields.
     /// </summary>
     public List<ProtoField> Fields { get; set; } = [];
+    
+    /// <summary>
+    /// Gets or sets the resolvedExtendedType.
+    /// </summary>
+    public object? ResolvedExtendedType { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the resolvedFile.
+    /// </summary>
+    public ProtoFile? ResolvedFile { get; set; }
 }

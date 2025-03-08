@@ -39,4 +39,24 @@ public class ProtoMethod
     /// Gets or sets the parent service.
     /// </summary>
     public ProtoService? ParentService { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the resolvedInputType.
+    /// </summary>
+    public object? ResolvedInputType { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the resolvedInputFile.
+    /// </summary>
+    public ProtoFile? ResolvedInputFile { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the resolvedOutputType.
+    /// </summary>
+    public object? ResolvedOutputType { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the resolvedOutputFile.
+    /// </summary>
+    public ProtoFile? ResolvedOutputFile { get; set; }
 }

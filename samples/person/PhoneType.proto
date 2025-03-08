@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package example.person;
+
+enum PhoneType {
+    MOBILE = 0;
+    HOME = 1;
+    WORK = 2;
+}

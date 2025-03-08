@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package example.person;
+
+import "Person.proto";
+
+message AddressBook {
+  repeated example.person.Person people = 1;
+}

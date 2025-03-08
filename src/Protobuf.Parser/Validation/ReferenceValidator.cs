@@ -40,17 +40,17 @@ public class ReferenceValidator
     public void ValidateReferences(IEnumerable<ProtoFile> protoFiles)
     {
         var errors = new List<string>();
-        var filesList = protoFiles.ToList();
-        var typeMap = BuildTypeMap(filesList);
-        
-        foreach (var protoFile in filesList)
+        var enumerable = protoFiles.ToList();
+        var typeMap = BuildTypeMap(enumerable);
+
+        foreach (var protoFile in enumerable)
         {
             foreach (var message in protoFile.Messages)
                 errors.AddRange(ValidateMessageReferences(message, typeMap, protoFile.Package));
-            
+        
             foreach (var service in protoFile.Services)
                 errors.AddRange(ValidateServiceReferences(service, typeMap, protoFile.Package));
-            
+        
             foreach (var extension in protoFile.Extensions)
                 errors.AddRange(ValidateExtensionReferences(extension, typeMap, protoFile.Package));
         }
@@ -117,6 +117,15 @@ public class ReferenceValidator
         var typeMap = new Dictionary<string, TypeInfo>();
         foreach (var protoFile in protoFiles)
         {
+            foreach (var import in protoFile.Imports)
+            {
+                if (import.ResolvedFile is null) 
+                    continue;
+                var resultTypeMap = BuildTypeMap([import.ResolvedFile]);
+                foreach (var (name, typeInfo) in resultTypeMap)
+                    typeMap.TryAdd(name, typeInfo);
+            }
+            
             foreach (var message in protoFile.Messages)
                 AddMessageToTypeMap(message, protoFile.Package, typeMap);
             

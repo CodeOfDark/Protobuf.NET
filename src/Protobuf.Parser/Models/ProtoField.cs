@@ -54,6 +54,16 @@ public class ProtoField
     /// Gets or sets the oneof this field belongs to.
     /// </summary>
     public ProtoOneof? Oneof { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the resolvedType.
+    /// </summary>
+    public object? ResolvedType { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the resolvedFile.
+    /// </summary>
+    public ProtoFile? ResolvedFile { get; set; }
         
     /// <summary>
     /// Gets whether this field is repeated.

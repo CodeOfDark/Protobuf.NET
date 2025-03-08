@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package example.person;
+
+option java_package = "com.example.person";
+option java_multiple_files = true;
+
+import "PhoneType.proto";
+
+message Person {
+    string name = 1;
+    int32 id = 2;
+    string email = 3 [deprecated = true];
+    
+    message PhoneNumber {
+        string number = 1;
+        example.person.PhoneType type = 2;
+    }
+
+    repeated Person.PhoneNumber phones = 4;
+    int64 last_updated = 5;
+    
+    oneof contact_preference {
+        string email_pref = 6;
+        string phone_pref = 7;
+    }
+}
+
+extend Person {
+    optional string nickname = 101;
+    optional string preferred_name = 102;
+}
