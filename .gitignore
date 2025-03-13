@@ -133,6 +133,7 @@ $tf/
 _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
+*.DotSettings
 
 # TeamCity is a build add-in
 _TeamCity*
@@ -407,3 +408,10 @@ FodyWeavers.xsd
 .DS_Store
 .AppleDouble
 .LSOverride
+
+# Ignore bin/Debug directories
+**/bin/Debug/
+
+# Ignore DotSettings files
+*.DotSettings
+*.DotSettings.user

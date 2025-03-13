@@ -8,7 +8,7 @@ namespace Protobuf.Core;
 /// </summary>
 public class CodedInputStream(byte[] buffer) : ICodedInputStream
 {
-    private int _position;
+    public int Position { get; private set; }
 
     public bool ReadBool()
     {
@@ -48,19 +48,13 @@ public class CodedInputStream(byte[] buffer) : ICodedInputStream
     public string ReadString()
     {
         var length = (int)ReadRawVarint32();
-        if (length == 0)
-            return string.Empty;
-        
-        return System.Text.Encoding.UTF8.GetString(ReadRawBytes(length));
+        return length == 0 ? string.Empty : System.Text.Encoding.UTF8.GetString(ReadRawBytes(length));
     }
 
     public byte[] ReadBytes()
     {
         var length = (int)ReadRawVarint32();
-        if (length == 0)
-            return [];
-        
-        return ReadRawBytes(length);
+        return length == 0 ? [] : ReadRawBytes(length);
     }
 
     public uint ReadFixed32()
@@ -97,10 +91,7 @@ public class CodedInputStream(byte[] buffer) : ICodedInputStream
 
     public uint ReadTag()
     {
-        if (IsAtEnd())
-            return 0;
-
-        return ReadRawVarint32();
+        return IsAtEnd() ? 0 : ReadRawVarint32();
     }
 
     public bool SkipField(uint tag)
@@ -128,7 +119,12 @@ public class CodedInputStream(byte[] buffer) : ICodedInputStream
 
     public bool IsAtEnd()
     {
-        return _position >= buffer.Length;
+        return Position >= buffer.Length;
+    }
+    
+    public void SetPosition(int position)
+    {
+        Position = position;
     }
 
     private byte ReadRawByte()
@@ -136,22 +132,22 @@ public class CodedInputStream(byte[] buffer) : ICodedInputStream
         if (IsAtEnd())
             throw new EndOfStreamException();
         
-        return buffer[_position++];
+        return buffer[Position++];
     }
 
     private byte[] ReadRawBytes(int count)
     {
         var result = new byte[count];
         
-        Array.Copy(buffer, _position, result, 0, count);
-        _position += count;
+        Array.Copy(buffer, Position, result, 0, count);
+        Position += count;
         
         return result;
     }
     
     private uint ReadRawVarint32()
     {
-        if (buffer.Length > _position + 5) 
+        if (buffer.Length > Position + 5) 
             return (uint)ReadRawVarint64();
             
         uint result = 0; 
@@ -159,7 +155,7 @@ public class CodedInputStream(byte[] buffer) : ICodedInputStream
 
         while (shift <= 35)
         {
-            var b = buffer[_position++];
+            var b = buffer[Position++];
             result |= (uint)(b & 0x7F) << shift;
             shift += 7;
 
@@ -177,7 +173,7 @@ public class CodedInputStream(byte[] buffer) : ICodedInputStream
 
         while (shift <= 70)
         {
-            var b = buffer[_position++];
+            var b = buffer[Position++];
             result |= (ulong)(b & 0x7F) << shift;
             shift += 7;
 

@@ -23,4 +23,7 @@ public interface ICodedInputStream
     uint ReadTag();
     bool SkipField(uint tag);
     bool IsAtEnd();
+    
+    int Position { get; }
+    void SetPosition(int position);
 }

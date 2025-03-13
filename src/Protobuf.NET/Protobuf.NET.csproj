@@ -8,4 +8,9 @@
         <OutputPath>$(MSBuildProjectDirectory)\bin\</OutputPath>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Protobuf.Core\Protobuf.Core.csproj" />
+      <ProjectReference Include="..\Protobuf.Parser\Protobuf.Parser.csproj" />
+    </ItemGroup>
+
 </Project>

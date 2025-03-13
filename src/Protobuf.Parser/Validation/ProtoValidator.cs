@@ -8,7 +8,6 @@ namespace Protobuf.Parser.Validation;
 /// </summary>
 public class ProtoValidator
 {
-    private readonly FieldValidator _fieldValidator;
     private readonly ReferenceValidator _referenceValidator;
         
     /// <summary>
@@ -16,7 +15,6 @@ public class ProtoValidator
     /// </summary>
     public ProtoValidator()
     {
-        _fieldValidator = new FieldValidator();
         _referenceValidator = new ReferenceValidator();
     }
         
