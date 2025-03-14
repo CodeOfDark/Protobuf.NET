@@ -123,12 +123,11 @@ internal static class Program
 
     private static void DeserializeProduct(byte[] serializedProduct)
     {
-        dynamic deserialized = serializedProduct.DeserializeWithDirectorySchema("./../../../../../samples/product", "Product");
-        Console.WriteLine($"Id: {deserialized.product_name}");
-        Console.WriteLine($"Name: {deserialized.available_quantities}");
+        dynamic deserialized = serializedProduct.DeserializeWithSchema("./../../../../../samples/product/product.proto", "Product");
+        Console.WriteLine($"Product Name: {deserialized.product_name}");
+        Console.WriteLine($"Available Quantities: {deserialized.available_quantities}");
         Console.WriteLine($"Images:");
         foreach (var image in deserialized.images)
             Console.WriteLine($" - Image: {image}");
     }
-
 }
