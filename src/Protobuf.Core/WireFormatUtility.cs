@@ -49,4 +49,28 @@ public static class WireFormatUtility
     {
         return (WireFormat)(tag & 0x7);
     }
+    
+    /// <summary>
+    /// Gets the appropriate wire format for a given .NET type
+    /// </summary>
+    /// <param name="type">The .NET type</param>
+    /// <returns>The appropriate wire format</returns>
+    public static WireFormat GetWireFormatForType(Type type)
+    {
+        if (type == typeof(bool) || type == typeof(int) || type == typeof(long) || 
+            type == typeof(uint) || type == typeof(ulong) || type == typeof(byte) || 
+            type == typeof(sbyte) || type == typeof(short) || type == typeof(ushort))
+            return WireFormat.Varint;
+
+        if (type == typeof(float) || type == typeof(int))
+            return WireFormat.Fixed32;
+
+        if (type == typeof(double) || type == typeof(long))
+            return WireFormat.Fixed64;
+
+        if (type == typeof(string) || type == typeof(byte[]) || type.IsClass)
+            return WireFormat.LengthDelimited;
+
+        throw new ArgumentException($"No appropriate wire format for type: {type.Name}");
+    }
 }
